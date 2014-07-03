@@ -137,13 +137,12 @@ public final class XposedBridge {
 	private static native String getStartClassName();
 
 	private static void determineXposedVersion() throws IOException {
-		ZipInputStream is = new ZipInputStream(new FileInputStream(BASE_DIR + "bin/XposedBridge.jar"));
+		ZipInputStream is = new ZipInputStream(new FileInputStream( "/system/framework/XposedBridge.jar"));
 		ZipEntry entry;
 		try {
 			while ((entry = is.getNextEntry()) != null) {
-				if (!entry.getName().equals("assets/VERSION"))
+				if (!(entry.getName().equals("assets/VERSION")||entry.getName().equals("VERSION")))
 					continue;
-
 				BufferedReader br = new BufferedReader(new InputStreamReader(is));
 				String version = br.readLine();
 				br.close();
@@ -153,7 +152,7 @@ public final class XposedBridge {
 					throw new RuntimeException("could not parse XposedBridge version from \"" + version + "\"");
 				return;
 			}
-			throw new RuntimeException("could not find assets/VERSION in " + BASE_DIR + "bin/XposedBridge.jar");
+			throw new RuntimeException("could not find assets/VERSION in "  + "/system/framework/XposedBridge.jar");
 		} finally {
 			try {
 				is.close();
