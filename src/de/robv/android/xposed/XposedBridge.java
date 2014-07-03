@@ -379,6 +379,10 @@ public final class XposedBridge {
 	 * Try to load all modules defined in <code>BASE_DIR/conf/modules.list</code>
 	 */
 	private static void loadModules(String startClassName) throws IOException {
+		File confFile = new File(BASE_DIR + "conf/modules.list");
+		if(!confFile.exists()){
+			return;
+		}
 		BufferedReader apks = new BufferedReader(new FileReader(BASE_DIR + "conf/modules.list"));
 		String apk;
 		while ((apk = apks.readLine()) != null) {
